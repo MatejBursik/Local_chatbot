@@ -10,11 +10,23 @@ async function sendMessage(message) {
     return data.response;
 }
 
-function createMessage(text) {
-    const p = document.createElement("p");
-    p.innerText = text;
+function createMessage(text, css_class) {
+    const icon = document.createElement("i");
 
-    return p;
+    if (css_class === "user") {
+        icon.className = "fa-solid fa-circle-user";
+    } else {
+        icon.className = "fa-solid fa-robot";
+    }
+
+    const span = document.createElement("span");
+    span.innerText = text;
+
+    const div = document.createElement("div");
+    div.appendChild(icon);
+    div.appendChild(span);
+
+    return div;
 }
 
 const form = document.getElementById("chatForm");
@@ -43,8 +55,8 @@ form.addEventListener("submit", async (e) => {
 
     // display text after response
     responseDiv.removeChild(loading); // remove loading
-    responseDiv.appendChild(createMessage("You: " + message));
-    responseDiv.appendChild(createMessage("Bot: " + reply));
+    responseDiv.appendChild(createMessage(message, "user"));
+    responseDiv.appendChild(createMessage(reply, "bot"));
     responseDiv.scrollTop = responseDiv.scrollHeight;
 
     // clear input
