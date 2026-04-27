@@ -18,3 +18,9 @@ Shut down the containers:
 ```bash
 docker compose down
 ```
+
+## TODO
+- Replace "session_id" in conversation memory for "conversation_id"
+- Move conversation memory into a database
+- Implement functionability for multiple conversations per user (without user auth)
+- Add RAG implementation
