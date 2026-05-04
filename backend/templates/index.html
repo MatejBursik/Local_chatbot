@@ -8,14 +8,26 @@
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-    <form id="chatForm">
-        <input type="text" id="messageInput" placeholder="Type a message..." />
-        <button type="submit">Send</button>
-    </form>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <button id="createChat"><i class="fa fa-plus"></i> New Chat</button>
+            </div>
 
-    <div id="spacer"></div>
+            <ul id="conversation-list"></ul>
+        </aside>
 
-    <div id="response"></div>
+        <main class="chat-container">
+            <form id="chatForm">
+                <input type="text" id="messageInput" placeholder="Type a message..." />
+                <button type="submit">Send</button>
+            </form>
+
+            <div id="spacer"></div>
+
+            <div id="response"></div>
+        </main>
+    </div>
 
     <script src="/static/script.js"></script>
 </body>

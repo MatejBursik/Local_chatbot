@@ -9,19 +9,44 @@ LLM_URL = os.getenv("LLM_URL")
 MAX_MESSAGES = 10  # Prevents context explosion
 conversations = {} # Conversation memory
 
+@app.route("/create_conversation", methods=["POST"])
+def create_conversation():
+    data = request.json
+    conversation_id = int(data.get("conversation_id"))
+
+    if conversation_id not in conversations:
+        conversations[conversation_id] = []
+
+    return jsonify({"conversation_id": conversation_id})
+
+@app.route("/get_conversation/<conversation_id>", methods=["GET"])
+def get_conversation(conversation_id):
+    history = conversations.get(int(conversation_id), [])
+
+    return jsonify({
+        "conversation_id": conversation_id,
+        "messages": history
+    })
+
+@app.route("/get_conversation_ids", methods=["GET"])
+def get_all_conversations():
+    return jsonify({
+        "conversation_ids": list(conversations.keys())
+    })
+
 @app.route("/chat", methods=["POST"])
 def chat():
     data = request.json
     user_input = data["message"]
-    session_id = data.get("session_id", "default")
+    conversation_id = int(data.get("conversation_id", "default"))
 
-    # Initialize session
-    if session_id not in conversations:
-        conversations[session_id] = []
+    # Error check
+    if conversation_id not in conversations:
+        return jsonify({"error": "conversation not found"}), 404
 
-    conversations[session_id] = conversations[session_id][-MAX_MESSAGES:] # Trim memory
+    conversations[conversation_id] = conversations[conversation_id][-MAX_MESSAGES:] # Trim memory
 
-    prompt = build_prompt(conversations[session_id], user_input)
+    prompt = build_prompt(conversations[conversation_id], user_input)
 
     response = requests.post(LLM_URL, json={
         "model": "llama3",
@@ -32,19 +57,19 @@ def chat():
     reply = response.get("response", "")
 
     # Store conversation
-    conversations[session_id].append({
+    conversations[conversation_id].append({
         "role": "user",
         "content": user_input
     })
 
-    conversations[session_id].append({
+    conversations[conversation_id].append({
         "role": "assistant",
         "content": reply
     })
 
     return jsonify({
         "response": reply,
-        "session_id": session_id
+        "conversation_id": conversation_id
     })
 
 @app.route("/")
