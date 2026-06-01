@@ -42,6 +42,8 @@ async function loadConversations() {
         li.addEventListener("click", async () => {
             if (is_loading_conversation) return;
 
+            setActiveConversation(li);
+
             is_loading_conversation = true;
             responseDiv.innerHTML = "Loading...";
 
@@ -80,6 +82,14 @@ function createMessage(text, css_class) {
     div.appendChild(span);
 
     return div;
+}
+
+function setActiveConversation(active_chat) {
+    document.querySelectorAll("#conversation-list li").forEach(li => {
+        li.classList.remove("active");
+    });
+
+    active_chat.classList.add("active");
 }
 
 const form = document.getElementById("chatForm");
@@ -162,6 +172,8 @@ newChatBTN.addEventListener("click", async (e) => {
     li.addEventListener("click", async () => {
         if (is_loading_conversation) return;
 
+        setActiveConversation(li);
+
         is_loading_conversation = true;
         responseDiv.innerHTML = "Loading...";
 
@@ -179,4 +191,5 @@ newChatBTN.addEventListener("click", async (e) => {
     });
 
     conversationList.appendChild(li);
+    setActiveConversation(li);
 });

@@ -21,5 +21,5 @@ docker compose down
 
 ## TODO
 - Move conversation memory into a database
-- Add RAG implementation
+- Add RAG implementation (Start with .csv, .txt, ... and continue towards more complex formats like .ord, .pdf ...)
 - Add users with auth

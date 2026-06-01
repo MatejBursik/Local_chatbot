@@ -35,6 +35,16 @@
     text-align: center;
 }
 
+#conversation-list li:hover {
+    background-color: #8f8f8f;
+}
+
+#conversation-list li.active {
+    background-color: #2563eb;
+    color: white;
+    font-weight: bold;
+}
+
 .chat-container {
     width: 90%;
 }
